@@ -779,20 +779,11 @@ const uap = [
  class NetSocket {
      constructor(){}
  
-  function HTTP(options, callback) {
-  const { address } = options; // Destructure the 'address' property from 'options' object.
-  const parsedAddr = address.split(":");
-  const addrHost = parsedAddr[0];
-  
-  const payload = `CONNECT ${address}:443 HTTP/1.1
-Host: ${address}:443
-Proxy-Connection: Keep-Alive
-Connection: Keep-Alive\r\n\r\n`;
-  
-  const buffer = Buffer.from(payload); // Use 'Buffer.from' instead of 'new Buffer.from' for compatibility.
-
-  // You can now continue with your code as needed.
-}
+  HTTP(options, callback) {
+     const parsedAddr = options.address.split(":");
+     const addrHost = parsedAddr[0];
+     const payload = "CONNECT " + options.address + ":443 HTTP/1.1\r\nHost: " + options.address + ":443\r\nProxy-Connection: Keep-Alive\r\nConnection: Keep-Alive\r\n\r\n";
+     const buffer = new Buffer.from(payload);
 
      const connection = net.connect({
          host: options.host,
